@@ -3,23 +3,22 @@ require('dotenv').config();
 const Express = require('express'); 
 const app = Express(); 
 
-app.use(Express.static(__dirname + '/public')); 
+const database = require('./Db'); 
 
-app.get('/', (req, res) => res.render('index')); 
+database.sync({alter: true});
 
 app.use(Express.json()); 
 
-app.use('/test', (req, res) => [ res.send('This is a test endpoint')])
+app.use(Express.static(__dirname + '/public')); 
 
-const database = require('./Db'); 
+app.use(require('./middleware/headers'));
 
-database.sync(); 
-
-//require headers below when made 
-app.use(require('./middleware/headers')); 
+app.get('/', (req, res) => res.render('index'));  
 
 const User = require('./controllers/usercontroller'); 
 app.use('/user', User); 
 
-const Routine = require('./controllers/routinecontroller'); 
-app.use('/routine', Routine); 
+const routine = require('./controllers/routinecontroller'); 
+app.use('/routine', routine); 
+
+app.listen(process.env.PORT, function(){console.log(`app is listening on port ${process.env.PORT}`)})
