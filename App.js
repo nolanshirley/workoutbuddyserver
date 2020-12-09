@@ -16,3 +16,10 @@ const database = require('./Db');
 database.sync(); 
 
 //require headers below when made 
+app.use(require('./middleware/headers')); 
+
+const User = require('./controllers/usercontroller'); 
+app.use('/user', User); 
+
+const Routine = require('./controllers/routinecontroller'); 
+app.use('/routine', Routine); 
