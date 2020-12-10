@@ -1,7 +1,7 @@
 const database = require('../Db'); 
 
 module.exports = (sequelize, DataTypes) => {
-    const Routine = sequelize.define('Routine', {
+    const Routine = sequelize.define('routine', {
         nameOfExercise: {
             type: DataTypes.STRING, 
             allowNull: false
