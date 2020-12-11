@@ -24,7 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         }, 
         reps: {
             type: DataTypes.STRING, 
-            allowNull: false
+            allowNull: false, 
+            validate: {
+                max: 200
+            }
         } 
     })
     return Routine; 
