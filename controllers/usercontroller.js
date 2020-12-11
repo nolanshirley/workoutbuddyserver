@@ -46,5 +46,32 @@ router.post('/signin', (req, res) => {
         .catch(err => res.status(500).json({ error: err }))
 })
 
+router.get('/:username', (req, res) => {
+    User.findOne({
+        where: { username : req.params.username }
+    })
+    .then(event => res.status(200).json(event))
+    .catch(err => res.status(500).json({ error: err }))
+})
+
+router.put('/edit/:id', (req, res) => {
+    User.update(req.body, {
+        where: { id: req.params.id }
+    })
+    .then(event => res.status(200).json({ event: event }))
+    .catch(err => res.status(500).json({ error: err }))
+}); 
+
+router.delete('/delete/:email', async (req, res) => {
+    try {
+        const destroy = await User.destroy({
+            where: { email: req.params.email }
+        })
+        res.status(200).json(destroy)
+    } catch (err) {
+        res.status(500).json({message: "user not deleted", err})
+    }
+})
+
 
 module.exports = router; 

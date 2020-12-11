@@ -14,6 +14,7 @@ User = database.import('./models/User');
 Routine = database.import('./models/Routine'); 
 Favorite = database.import('./models/Favorite'); 
 
+
 User.hasMany(Favorite, { as: "favorites"});
 Favorite.belongsTo(User); 
 
@@ -22,7 +23,6 @@ User.hasMany(Routine);
 
 Routine.hasMany(Favorite, { as: "favorites"});
 Favorite.belongsTo(Routine);  
-
 
 
 module.exports = database; 
