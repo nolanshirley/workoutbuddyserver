@@ -54,6 +54,17 @@ router.get('/:username', (req, res) => {
     .catch(err => res.status(500).json({ error: err }))
 })
 
+// router.get('/favorites/:userId/:routineId', (req, res) => {
+//     User.findAll({include: "favorites"}, {
+//         where: { 
+//             userId : req.params.userId, 
+//             routineId : req. params.routineId
+//         }
+//     })
+//     .then(event => res.status(200).json(event))
+//     .catch(err => res.status(500).json({ error: err }))
+// })
+
 router.put('/edit/:id', (req, res) => {
     User.update(req.body, {
         where: { id: req.params.id }
