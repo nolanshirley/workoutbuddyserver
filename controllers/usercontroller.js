@@ -8,7 +8,8 @@ router.post('/signup', (req, res) => {
     User.create({
         email: req.body.email, 
         password: bcrypt.hashSync(req.body.password, 12), 
-        username: req.body.username
+        username: req.body.username,
+        role: "user" 
     })
     .then(user => {
         const token = jwt.sign({id: user.id}, process.env.JWT, {expiresIn: '7d'})
@@ -46,24 +47,28 @@ router.post('/signin', (req, res) => {
         .catch(err => res.status(500).json({ error: err }))
 })
 
-router.get('/:username', (req, res) => {
-    User.findOne({
-        where: { username : req.params.username }
-    })
-    .then(event => res.status(200).json(event))
-    .catch(err => res.status(500).json({ error: err }))
+
+router.get('/adminSearch/:username', (req, res) => {
+    if (req.user.role === process.env.ADMIN) {
+        User.findOne({
+            where: { username : req.params.username }
+        })
+        .then(event => res.status(200).json(event)) 
+        .catch(err => res.status(500).json({ error: err }))
+    } else {
+        res.status(504).json({
+            message: "unauthorized user"
+        })
+    }
 })
 
-// router.get('/favorites/:userId/:routineId', (req, res) => {
-//     User.findAll({include: "favorites"}, {
-//         where: { 
-//             userId : req.params.userId, 
-//             routineId : req. params.routineId
-//         }
-//     })
-//     .then(event => res.status(200).json(event))
-//     .catch(err => res.status(500).json({ error: err }))
-// })
+router.get('/search/:id', (req, res) => {
+    User.findOne({
+        where: { id : req.params.id }
+    })
+    .then(event => res.status(200).json({event}))
+    .catch(err => res.status(500).json({ error: err }))
+})
 
 router.put('/edit/:id', (req, res) => {
     User.update(req.body, {
@@ -81,6 +86,23 @@ router.delete('/delete/:email', async (req, res) => {
         res.status(200).json(destroy)
     } catch (err) {
         res.status(500).json({message: "user not deleted", err})
+    }
+})
+
+router.delete('/adminDelete/:email', async (req, res) => {
+    if (req.user.role === process.env.ADMIN) {
+        try {
+            const destroy = await User.destroy({
+                where: { email: req.params.email }
+            })
+            res.status(200).json(destroy)
+        } catch (err) {
+            res.status(500).json({message: "user not deleted", err})
+        }
+    } else {
+        res.status(504).json({
+            message: "unauthorized user"
+        })
     }
 })
 

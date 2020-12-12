@@ -5,7 +5,7 @@ const app = Express();
 
 const database = require('./Db'); 
 
-database.sync({force: true});
+database.sync(); // ({force: true}) only add when changing models in the database then delete and restart server 
 
 app.use(Express.json()); 
 

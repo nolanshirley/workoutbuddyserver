@@ -2,6 +2,7 @@ const router = require('express').Router();
 const Routine = require('../Db').import('../models/Routine'); 
 const Favorite = require('../Db').import('../models/Favorite'); 
 const User = require('../Db').import('../models/User'); 
+const validateSession = require('../middleware/validateSession');
 
 router.get('/', (req, res) => {
     Routine.findAll()
@@ -51,15 +52,21 @@ router.delete('/delete/:id', async (req, res) => {
     }
 })
 
-router.get('/findMyRoutines/:userId/:routineId', (req, res) => {
-    Routine.findAll({include: "favorites", 
-        where : { 
-            userId : req.params.userId, 
-            routineId : req.params.routineId
-        }
-    })
-    .then(event => res.status(200).json(event))
-    .catch(err => res.status(500).json({ error: err }))
+router.get('/findMyRoutines/:userId/:routineId', validateSession, (req, res) => {
+    if (req.user.role === process.env.ADMIN) {
+        Routine.findAll({include: "favorites", 
+                where : { 
+                    userId : req.params.userId, 
+                    routineId : req.params.routineId
+                }
+            })
+        .then(event => res.status(200).json(event))
+        .catch(err => res.status(500).json({ error: err }))
+    } else {
+        res.status(504).json({
+            message: "unauthorized user"
+        })
+    }
 })
 
 
