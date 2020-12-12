@@ -20,12 +20,12 @@ router.get('/:id', (req, res) => {
 
 router.post('/workout', (req, res) => {
     const workout = {
-        nameOfExercise = req.body.nameOfExercise, 
-        equipment = req.body.equipment, 
-        weight = req.body.weight, 
-        duration = req.body.duration, 
-        sets = req.body.sets, 
-        reps = req.body.reps
+        exercise : req.body.exercise, 
+        equipment : req.body.equipment, 
+        weight : req.body.weight, 
+        duration : req.body.duration, 
+        sets : req.body.sets, 
+        reps : req.body.reps
     }
     Routine.create(workout) 
     .then(event => res.status(200).json(event))
@@ -34,7 +34,7 @@ router.post('/workout', (req, res) => {
 
 router.put('/edit/:id', (req, res) => {
     Routine.update(req.body, {
-        where: { id = req.params.id }
+        where: { id : req.params.id }
     })
     .then(event => res.status(200).json(event))
     .catch(err => res.status(500).json({ error: err }))
@@ -43,7 +43,7 @@ router.put('/edit/:id', (req, res) => {
 router.delete('/delete/:id', async (req, res) => {
     try {
         const deletion = await Routine.destroy({
-            where: { id = req.params.id }
+            where: { id : req.params.id }
         })
         res.status(200).json(deletion)
     } catch (err) {
