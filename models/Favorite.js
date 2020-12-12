@@ -2,7 +2,7 @@ const database = require('../Db');
 
 module.exports = (sequelize, DataTypes) => {
     const favorite = sequelize.define('favorite', {
-        comments: {
+        comment: {
             type: DataTypes.STRING, 
             allowNull: true
         }

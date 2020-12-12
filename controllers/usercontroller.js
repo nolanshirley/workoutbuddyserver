@@ -48,7 +48,7 @@ router.post('/signin', (req, res) => {
 })
 
 
-router.get('/adminSearch/:username', (req, res) => {
+router.get('/adminSearch/:username', validateSession, (req, res) => {
     if (req.user.role === process.env.ADMIN) {
         User.findOne({
             where: { username : req.params.username }
@@ -62,7 +62,7 @@ router.get('/adminSearch/:username', (req, res) => {
     }
 })
 
-router.get('/search/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     User.findOne({
         where: { id : req.params.id }
     })
@@ -74,7 +74,7 @@ router.put('/edit/:id', (req, res) => {
     User.update(req.body, {
         where: { id: req.params.id }
     })
-    .then(event => res.status(200).json({ event: event }))
+    .then(event => res.status(200).json({ event }))
     .catch(err => res.status(500).json({ error: err }))
 }); 
 
@@ -89,8 +89,8 @@ router.delete('/delete/:email', async (req, res) => {
     }
 })
 
-router.delete('/adminDelete/:email', async (req, res) => {
-    if (req.user.role === process.env.ADMIN) {
+router.delete('/adminDelete/:email', validateSession, async (req, res) => {
+    if (req.user.role === "admin") {
         try {
             const destroy = await User.destroy({
                 where: { email: req.params.email }
