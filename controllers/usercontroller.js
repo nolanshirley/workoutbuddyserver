@@ -49,7 +49,7 @@ router.post('/signin', (req, res) => {
 
 
 router.get('/adminSearch/:username', validateSession, (req, res) => {
-    if (req.user.role === process.env.ADMIN) {
+    if (req.user.role === "admin") {
         User.findOne({
             where: { username : req.params.username }
         })

@@ -54,7 +54,7 @@ router.delete('/delete/:id', validateSession, async (req, res) => {
 })
 
 router.delete('/adminRoutineDelete/:id', validateSession, async (req, res) => {
-    if (req.user.role === process.env.ADMIN) {
+    if (req.user.role === "admin") {
         try {
             const deletion = await Routine.destroy({
                 where: { id : req.params.id }
@@ -71,10 +71,10 @@ router.delete('/adminRoutineDelete/:id', validateSession, async (req, res) => {
 })
 
 
-router.get('/findRoutines/:userId/:routineId', (req, res) => {
+router.get('/findRoutines/:userId/:routineId', validateSession, (req, res) => {
     Routine.findAll({include: "favorites", 
         where : { 
-            userId : req.params.userId, 
+            userId : req.user.id, 
             routineId : req.params.routineId 
         }
     })
