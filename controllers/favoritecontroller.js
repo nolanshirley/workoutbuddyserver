@@ -21,8 +21,7 @@ router.get('/:id', (req, res) => {
 router.post('/comment', validateSession, (req, res) => { 
     const createComment = {
         comment : req.body.comment, 
-        userId : req.user.id, 
-        routineId : req.body.routineId
+        userId : req.user.id
     }
     Favorite.create(createComment)
     .then(event => res.status(200).json(event))
