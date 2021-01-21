@@ -18,10 +18,12 @@ router.get('/:id', (req, res) => {
     .catch(err => res.status(500).json({ error: err }))
 })
 
-router.post('/comment', validateSession, (req, res) => { 
+router.post('/comment/:routineId', validateSession, (req, res) => { 
     const createComment = {
         comment : req.body.comment, 
-        userId : req.user.id
+        userId : req.user.id, 
+        routineId : req.params.routineId, 
+        from : localStorage.getItem('username')
     }
     Favorite.create(createComment)
     .then(event => res.status(200).json(event))

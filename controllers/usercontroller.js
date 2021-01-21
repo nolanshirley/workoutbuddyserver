@@ -62,13 +62,13 @@ router.get('/adminSearch/:username', validateSession, (req, res) => {
     }
 })
 
-router.get('/search/:username', (req, res) => {
-    User.findOne({
-        where: { username: req.params.username} 
-    })
-    .then(res.status('User found!'))
-    .catch(err => res.status(500).json({error : err}))
-})
+// router.get('/search/:username', (req, res) => {
+//     User.findOne({
+//         where: { username: req.params.username} 
+//     })
+//     .then(res.status('User found!'))
+//     .catch(err => res.status(500).json({error : err}))
+// })
 
 router.get('/:id', (req, res) => {
     User.findOne({

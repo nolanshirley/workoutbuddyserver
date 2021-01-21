@@ -5,7 +5,7 @@ const User = require('../Db').import('../models/User');
 const validateSession = require('../middleware/validateSession');
 
 router.get('/', (req, res) => {
-    Routine.findAll()
+    Routine.findAll({include: 'favorites'})
         .then(event => res.status(200).json(event))
         .then(events => console.log(events))
         .catch(err => res.status(500).json({error: err}))

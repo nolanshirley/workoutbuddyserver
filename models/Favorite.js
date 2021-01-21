@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
         comment: {
             type: DataTypes.STRING, 
             allowNull: true
+        }, 
+        from: {
+            type: DataTypes.STRING, 
+            allowNull: true
         }
     })
     return favorite; 
