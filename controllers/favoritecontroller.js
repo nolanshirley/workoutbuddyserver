@@ -23,7 +23,7 @@ router.post('/comment/:routineId', validateSession, (req, res) => {
         comment : req.body.comment, 
         userId : req.user.id, 
         routineId : req.params.routineId, 
-        from : localStorage.getItem('username')
+        from : req.user.username
     }
     Favorite.create(createComment)
     .then(event => res.status(200).json(event))
